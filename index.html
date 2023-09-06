@@ -1,64 +1,24 @@
-//  .   ___                      _  _   ___________  _______  _______   
-//   __| _/____ ______   ____ __| || |_/_   \   _  \ \   _  \ \   _  \  
-//  / __ |/  _ \\____ \_/ __ \\   __   /|   /  /_\  \/  /_\  \/  /_\  \ 
-// / /_/ (  <_> )  |_> >  ___/ |  ||  | |   \  \_/   \  \_/   \  \_/   \
-// \____ |\____/|   __/ \___  >_  ~~  _\|___|\_____  /\_____  /\_____  /
-//      \/      |__|        \/  |_||_|             \/       \/       \/ 
-
-<?php
-
-function getUserIP() {
-
-    if (!empty($_SERVER['HTTP_CLIENT_IP']) && filter_var($_SERVER['HTTP_CLIENT_IP'], FILTER_VALIDATE_IP)) {
-        return $_SERVER['HTTP_CLIENT_IP'];
-    }
-
-    if (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
-        $ipList = explode(',', $_SERVER['HTTP_X_FORWARDED_FOR']);
-        foreach ($ipList as $ip) {
-            if (filter_var($ip, FILTER_VALIDATE_IP)) {
-                return $ip;
-            }
-        }
-    }
-
-    if (!empty($_SERVER['REMOTE_ADDR']) && filter_var($_SERVER['REMOTE_ADDR'], FILTER_VALIDATE_IP)) {
-        return $_SERVER['REMOTE_ADDR'];
-    }
-
-    return 'UNKNOWN';
-}
-
-$userIP = getUserIP();
-
-$webhookURL = "https://discord.com/api/webhooks/1149051199476207810/35UWzU2LotigsQajWZ-su4_HzuCsJpHqvJINhUDYWT_tDDGwtEAMQo2fOOqmBLhuZ3Z_";
-
-$data = array(
-    "content" => "User IP: " . $userIP
-);
-
-$options = array(
-    "http" => array(
-        "header" => "Content-Type: application/json",
-        "method" => "POST",
-        "content" => json_encode($data)
-    )
-);
-$context = stream_context_create($options);
-$result = file_get_contents($webhookURL, false, $context);
-
-if ($result === FALSE) {
-
-    echo "An error occurred while sending the message.";
-} else {
-
-    echo "User IP sent to Discord.";
-}
-?>
-
 <html>
-<center><h1> </h1></center>
-<center><p>  </p></center>
+<body>
+<title>Rainbow Line</title>
+<style>
+.rainbowbar{
+height:5px;/height and width of rainbow bar(no shit)/
+width:100%;
+background:linear-gradient(90deg,red 0%,yellow 15%,lime 30%, cyan 50%, blue 65%, magenta 80%, red 100%);/gradient colors/
+background-size: 200%;
+animation: moverainbow 10s linear infinite;
+}
+@keyframes moverainbow{
+0%
+{background-position: 0% 0%}
+100%
+{background-position: -200% 0%}
+}
+</style>
 
-<body style=background-color:rgb(6,6,6)>
+
+
+<div class="rainbowbar" style="position:absolute;top:0px;left:0px;"></div>
+</body>
 </html>
